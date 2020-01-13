@@ -6,17 +6,33 @@ In this project, we have explored multiple Content Based and Collaborative Filte
 ## CHALLENGE?
 Many items, Few transactions -> Sparce Matrices 
 
-## COLLABRATIVE FILTERING:
+## Collaborative Filtering:
 User Based: User’s who bought this, also bought that…
 Item Based: If you like this item, you may also like that item…
 
-## How to measure similarity?
-Cosine: Simple but not powerful
+Collaborative Filtering works by recommending you the things that others users with similar interests have also liked.
+Our research on this topic spans three primary types of algorithms:
+1. Similarity: Similarity algorithms, such as cosine similarity, are appealing for their simplicity, ease of use, and swift deployment.
+2. Clustering: Clustering algorithms, specifically k-Nearest Neighbors (KNN), evolve beyond similarity methods in that they are machine learning models that are fit to training data. While KNN is a widely known algorithm for recommender system applications, handling large amounts of data can slow it down substantially. Additionally, in the case of the Amazon Grocery data set, the data was imbalanced, a known hinderance to KNN performance, as it consisted primarily of 5-star reviews.
+3. Matrix Factorization: Three matrix factorization algorithms were researched and tested: Singular Value Decomposition (SVD), SVD++, and Non-Negative Matrix Factorization (NMF). 
 
-Problem: Cold Start
 
-## COLLABRATIVE FILTERING
-Determine relative ‘closeness’ of items based on their description and recommend based on this
+
+Problem with Collaborative Filtering: Cold Start
+Solution: Content Based Recommendation System
+
+## Content Based Approach:
+Determine relative ‘closeness’ of items based on their description and recommend based on this. In content-based filtering, recommendations are derived from the characteristics of the content being pursued.
+The process begins by creating a pivot table with all products representing the columns, users representing the rows and any given ratings representing the values. As there will likely be a lot of products each user did not rate, these values are represented by NaN.
+Because we cannot use NaN in calcuations, and also because the users were asked to rate products on a 1-5 scale, we can transform any NaN value into a 0.
+
+Now that data has been transformed properly, Matrix Factorization and Stochastic Gradient Descent will be used to create predicted ratings for each product, for each user.
+
+Matrix Factorization on a high level is producing two matrices whose product is the original matrix given. The two matrices represent generated item and user features. The features are inferred from their related rating patterns. High correspondence between item and user factors lead to a recommendation.
+
+Matrix factorization models map both users and items to a joint latent factor space of dimensionality f, such that user-item interactions are modeled as inner products in that space. The result is each item will have a vector Q and each user will have a vector P. For each product Q, its' elements show the extent to which the items possess those factors. For each user P, it's elements show the extent to which the user is interested in items high on the corresponding factors. The resulting dot product Q * P captures the interaction between user and product and approximates the user's rating on that product.
+
+Within the Matrix Factorization process, Stochastic Gradient Descent is used to avoid imputation and overfitting. This approach helps to model directly the observed ratings only, and generalizes these ratings in such a way that predicts future ratings. A minimum squared error is used to find the expected rating and to avoid overfitting, a constant is applied to control the extent of regularization. SGD uses a magnitude in the opposite direction of the gradient to normalize the given rating.
 Approaches: Matrix Factorization: Robust but time consuming SVD SVD++ NMF Light-FM
 
 The notebook contains helpful notes and explanation of appraoches. 
